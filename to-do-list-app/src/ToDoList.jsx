@@ -10,19 +10,37 @@ function ToDoList() {
     }
 
     function addTask() {
+        if (newTask.trim() !== "") {
+            setTasks(prevTasks => [...prevTasks, newTask])
+            setNewTask("")
+        }
 
     }
 
-    function deleteTask() {
+    function deleteTask(index) {
+
+        setTasks(tasks.filter((_, i) => i !== index))
 
     }
 
-    function moveTaskUp() {
+    function moveTaskUp(index) {
+
+        const updatedTasks = [...tasks];
+
+        if (index > 0) {
+            [updatedTasks[index], updatedTasks[index - 1]] = [updatedTasks[index - 1], updatedTasks[index]];
+            setTasks(updatedTasks)
+        }
 
     }
 
-    function moveTaskDown() {
+    function moveTaskDown(index) {
+        const updatedTasks = [...tasks];
 
+        if (index < updatedTasks.length) {
+            [updatedTasks[index], updatedTasks[index + 1]] = [updatedTasks[index + 1], updatedTasks[index]];
+            setTasks(updatedTasks)
+        }
     }
 
 
@@ -45,10 +63,9 @@ function ToDoList() {
             {tasks.map((task, index) =>
                 <li key={index}>
                     <span className='text'>{task}</span>
-                    <button className='delete-button' onClick={deleteTask}>Delete</button>
-                    <button className='move-button' onClick={moveTaskUp}>⬆</button>
-                    <button className='move-button' onClick={moveTaskDown}>⬇</button>
-
+                    <button className='delete-button' onClick={() => deleteTask(index)}>Delete</button>
+                    <button className='move-button' onClick={() => moveTaskUp(index)}>⬆</button>
+                    <button className='move-button' onClick={() => moveTaskDown(index)}>⬇</button>
                 </li>)
             }
         </ol>
